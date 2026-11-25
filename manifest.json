@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Farsify — مترجم فارسی با فونت وزیرمتن",
+  "version": "1.1.0",
+  "description": "ترجمه‌ی خودکار صفحات به فارسی با فونت وزیرمتن و راست‌چین کردن محتوا",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "مترجم فارسی"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}
