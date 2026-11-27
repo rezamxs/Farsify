@@ -21,12 +21,14 @@ A browser extension that translates web pages into **Persian (Farsi)** with one 
 
 ### Download
 
-Get the latest `chrome-farsify-*.zip` or `firefox-farsify-*.zip` from the [Releases page](https://github.com/rezamxs/Farsify/releases), or [build it from source](#build-from-source).
+Latest release: **[v1.2.0](https://github.com/rezamxs/Farsify/releases/tag/v1.2.0)**: `chrome-farsify-v1.2.0.zip` (Chrome, Brave, Edge, Opera) and `firefox-farsify-v1.2.0.zip` (Firefox). All versions are on the [Releases page](https://github.com/rezamxs/Farsify/releases), or [build it from source](#build-from-source).
+
+The release ZIPs are installed manually (developer mode / temporary add-on), as shown below.
 
 ### Install (Chrome / Brave / Edge / Opera)
 
 1. Download `chrome-farsify-*.zip` from [Releases](https://github.com/rezamxs/Farsify/releases) and extract it
-2. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`)
+2. Open `chrome://extensions` (or `brave://extensions`, `edge://extensions`, `opera://extensions`)
 3. Enable **Developer mode**
 4. Click **Load unpacked** and select the extracted folder
 
@@ -36,9 +38,19 @@ Get the latest `chrome-farsify-*.zip` or `firefox-farsify-*.zip` from the [Relea
 2. Open `about:debugging#/runtime/this-firefox`
 3. Click **Load Temporary Add-on** and select the `manifest.json` inside
 
+Requires Firefox 115 or later. Firefox removes temporary add-ons when it restarts, so you need to load it again after each restart.
+
+### Usage
+
+Open a page, click the Farsify icon in the toolbar, and switch on **ترجمه‌ی این صفحه** ("translate this page"). Switch it off to restore the original text.
+
 ### Build from source
 
+Needs only Python 3 (standard library, no dependencies):
+
 ```bash
+git clone https://github.com/rezamxs/Farsify.git
+cd Farsify
 python3 build.py
 ```
 
@@ -67,12 +79,14 @@ When translation is on, the text of the page is sent to the **MyMemory** transla
 
 ### دانلود
 
-آخرین نسخه‌ی `chrome-farsify-*.zip` یا `firefox-farsify-*.zip` را از [صفحه‌ی Releases](https://github.com/rezamxs/Farsify/releases) دانلود کنید، یا خودتان از سورس بیلد بگیرید (پایین‌تر).
+آخرین نسخه: **[v1.2.0](https://github.com/rezamxs/Farsify/releases/tag/v1.2.0)**، شامل `chrome-farsify-v1.2.0.zip` (کروم، بریو، اج، اپرا) و `firefox-farsify-v1.2.0.zip` (فایرفاکس). همه‌ی نسخه‌ها در [صفحه‌ی Releases](https://github.com/rezamxs/Farsify/releases) هستند، یا خودتان از سورس بیلد بگیرید (پایین‌تر).
 
-### نصب در کروم / بریو / اج
+فایل‌های ZIP نسخه‌ها طبق مراحل زیر به‌صورت دستی نصب می‌شوند (Developer mode در کروم، افزونه‌ی موقت در فایرفاکس).
+
+### نصب در کروم / بریو / اج / اپرا
 
 1. فایل `chrome-farsify-*.zip` را از [Releases](https://github.com/rezamxs/Farsify/releases) دانلود و Extract کنید
-2. به `chrome://extensions` بروید
+2. به `chrome://extensions` بروید (یا `brave://extensions`، `edge://extensions`، `opera://extensions`)
 3. Developer mode را روشن کنید
 4. Load unpacked را بزنید و پوشه‌ی extract شده را انتخاب کنید
 
@@ -82,9 +96,19 @@ When translation is on, the text of the page is sent to the **MyMemory** transla
 2. به `about:debugging#/runtime/this-firefox` بروید
 3. Load Temporary Add-on را بزنید و فایل `manifest.json` داخل پوشه را انتخاب کنید
 
+به فایرفاکس ۱۱۵ یا جدیدتر نیاز دارد. فایرفاکس افزونه‌های موقت را با بسته شدن مرورگر حذف می‌کند، پس بعد از هر بار اجرای دوباره‌ی فایرفاکس باید دوباره آن را بارگذاری کنید.
+
+### استفاده
+
+صفحه را باز کنید، روی آیکن Farsify در نوار ابزار بزنید و کلید **ترجمه‌ی این صفحه** را روشن کنید. با خاموش کردن کلید، متن اصلی برمی‌گردد.
+
 ### بیلد از سورس
 
+فقط به Python 3 نیاز دارد (بدون وابستگی اضافه):
+
 ```bash
+git clone https://github.com/rezamxs/Farsify.git
+cd Farsify
 python3 build.py
 ```
 
