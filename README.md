@@ -9,13 +9,15 @@
 <a name="english"></a>
 ## English
 
-A browser extension that auto-translates any web page into **Persian (Farsi)** using the **Vazirmatn** font — without breaking the page layout.
+A browser extension that translates web pages into **Persian (Farsi)** with one click and renders them in the **Vazirmatn** font, without breaking the page layout.
 
-- 🌐 Translates page text to Persian (free MyMemory API, Google Translate fallback)
+- 🌐 Translates page text to Persian: free MyMemory API (English → Persian) first, Google Translate (auto-detected source language) as fallback
 - ✒️ Vazirmatn font with proper Persian line-height
 - 🧩 Translates text only — page layout and design stay untouched
-- 🔀 Per-tab on/off toggle — turn it off and the original text is restored
-- ⛔ Skips code blocks and form fields so pages don't break
+- 🔀 Per-tab on/off toggle in the toolbar popup. Turn it off and the original text is restored
+- 🔄 Keeps translating content that loads later, and re-applies after a reload or navigation within the same site (on a different site, turn it on again from the popup)
+- ⛔ Skips code blocks, form fields, editable areas, and anything marked `translate="no"` / `.notranslate`
+- 💾 Caches up to ~2,000 translations locally to save requests
 
 ### Download
 
@@ -44,7 +46,7 @@ Builds two ZIPs into `dist/`: one for Chromium browsers, one for Firefox. Instal
 
 ### Privacy
 
-When translation is on, the text of the page is sent to the **MyMemory** translation API (and to **Google Translate** as a fallback) to be translated. Don't turn it on for pages with private or sensitive content. Translations are cached locally in your browser; nothing else is collected.
+When translation is on, the text of the page is sent to the **MyMemory** translation API (and to **Google Translate** as a fallback) to be translated. Don't turn it on for pages with private or sensitive content. The Vazirmatn font files are loaded from the **jsDelivr** CDN, so that CDN sees a request from the page. Translations are cached locally in your browser; the extension collects nothing else and has no analytics.
 
 ### License
 
@@ -53,13 +55,15 @@ When translation is on, the text of the page is sent to the **MyMemory** transla
 <a name="فارسی"></a>
 ## فارسی
 
-افزونه‌ی مرورگر برای ترجمه‌ی خودکار صفحات وب به فارسی با فونت وزیرمتن، بدون تغییر در طراحی و چیدمان سایت.
+افزونه‌ی مرورگر برای ترجمه‌ی صفحات وب به فارسی با یک کلیک و نمایش آن‌ها با فونت وزیرمتن، بدون تغییر در طراحی و چیدمان سایت.
 
-- ترجمه‌ی متن صفحات به فارسی (API رایگان MyMemory + جایگزین گوگل‌ترنسلیت)
+- ترجمه‌ی متن صفحات به فارسی: اول با API رایگان MyMemory (انگلیسی به فارسی)، و در صورت خطا با گوگل‌ترنسلیت (تشخیص خودکار زبان مبدأ)
 - فونت وزیرمتن با ارتفاع خط مناسب فارسی
 - فقط متن ترجمه می‌شود؛ چیدمان و طراحی سایت دست‌نخورده می‌ماند
-- کلید روشن/خاموش جدا برای هر تب — خاموش کنی، متن اصلی برمی‌گردد
-- کد و فرم‌ها ترجمه نمی‌شوند تا صفحه خراب نشود
+- کلید روشن/خاموش جدا برای هر تب در پنجره‌ی افزونه؛ با خاموش کردن، متن اصلی برمی‌گردد
+- محتوایی که بعداً به صفحه اضافه می‌شود هم ترجمه می‌شود، و بعد از رفرش یا رفتن به صفحه‌ی دیگری از همان سایت، ترجمه دوباره اعمال می‌شود (در سایت دیگر، دوباره از پنجره‌ی افزونه روشنش کنید)
+- کد، فرم‌ها، بخش‌های قابل ویرایش و هر چیزی که با `translate="no"` یا `.notranslate` علامت خورده ترجمه نمی‌شود تا صفحه خراب نشود
+- تا حدود ۲۰۰۰ ترجمه به‌صورت محلی کش می‌شود تا درخواست‌ها کمتر شوند
 
 ### دانلود
 
@@ -88,7 +92,7 @@ python3 build.py
 
 ### حریم خصوصی
 
-وقتی ترجمه روشن است، متن صفحه برای ترجمه به سرویس **MyMemory** (و در صورت خطا به **Google Translate**) فرستاده می‌شود. برای صفحه‌هایی با اطلاعات خصوصی یا حساس ترجمه را روشن نکنید. ترجمه‌ها فقط به صورت محلی در مرورگر شما کش می‌شوند و اطلاعات دیگری جمع‌آوری نمی‌شود.
+وقتی ترجمه روشن است، متن صفحه برای ترجمه به سرویس **MyMemory** (و در صورت خطا به **Google Translate**) فرستاده می‌شود. برای صفحه‌هایی با اطلاعات خصوصی یا حساس ترجمه را روشن نکنید. فایل‌های فونت وزیرمتن از CDN سرویس **jsDelivr** بارگذاری می‌شوند، پس آن CDN یک درخواست از صفحه دریافت می‌کند. ترجمه‌ها فقط به صورت محلی در مرورگر شما کش می‌شوند؛ افزونه اطلاعات دیگری جمع‌آوری نمی‌کند و هیچ ابزار آماری ندارد.
 
 ### لایسنس
 
