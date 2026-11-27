@@ -16,17 +16,14 @@
       font-weight: 700;
       font-display: swap;
     }
-    html[fa-trans="on"], html[fa-trans="on"] body,
-    html[fa-trans="on"] p, html[fa-trans="on"] span, html[fa-trans="on"] li,
-    html[fa-trans="on"] a, html[fa-trans="on"] td, html[fa-trans="on"] th,
-    html[fa-trans="on"] div, html[fa-trans="on"] h1, html[fa-trans="on"] h2,
-    html[fa-trans="on"] h3, html[fa-trans="on"] h4, html[fa-trans="on"] h5, html[fa-trans="on"] h6,
-    html[fa-trans="on"] button, html[fa-trans="on"] label, html[fa-trans="on"] blockquote {
+    /* فونت و ارتفاع خط فقط روی عناصری که متنشان ترجمه شده اعمال می‌شود
+       تا فونت‌های آیکون (Font Awesome، Material Icons) و چیدمان صفحه خراب نشوند */
+    html[fa-trans="on"] [fa-trans-applied] {
       font-family: 'VazirmatnExt', 'Vazirmatn', Tahoma, sans-serif !important;
       line-height: 1.9 !important;
     }
     /* فقط متن‌های تازه ترجمه‌شده راست‌چین می‌شوند، نه چیدمان صفحه */
-    [fa-trans-applied] {
+    html[fa-trans="on"] [fa-trans-applied] {
       direction: rtl !important;
       unicode-bidi: isolate !important;
       text-align: start !important;

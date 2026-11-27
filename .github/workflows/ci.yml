@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Syntax-check JavaScript
+        run: |
+          set -e
+          find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -print0 \
+            | xargs -0 -n1 sh -c 'echo "node --check $0" && node --check "$0"'
+
+      - name: Validate manifest.json
+        run: python3 -c "import json;json.load(open('manifest.json'));print('manifest.json OK')"
+
+      - name: Build extension packages
+        run: python3 build.py
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: farsify-dist
+          path: dist/*.zip
+          if-no-files-found: error
