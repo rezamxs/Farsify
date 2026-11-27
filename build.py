@@ -34,7 +34,7 @@ make(f"chrome-farsify-v{VERSION}.zip", {})
 make(f"firefox-farsify-v{VERSION}.zip", {
     "background": {"scripts": ["background.js"]},
     "browser_specific_settings": {
-        "gecko": {"id": "farsify@example.com", "strict_min_version": "115.0"}
+        "gecko": {"id": "farsify@rezamxs.github.io", "strict_min_version": "115.0"}
     }
 })
 
