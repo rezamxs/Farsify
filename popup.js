@@ -13,16 +13,18 @@ async function getTab() {
   });
 })();
 
+let clearTimer = null;
+
 toggle.addEventListener("change", async () => {
   const tab = await getTab();
-  status.textContent = toggle.checked ? "در حال ترجمه…" : "";
-  chrome.runtime.sendMessage(
-    { type: "SET_STATE", tabId: tab.id, on: toggle.checked },
-    () => {
-      if (toggle.checked) {
-        setTimeout(() => { status.textContent = "✓ ترجمه انجام شد"; }, 1500);
-        setTimeout(() => { status.textContent = ""; }, 3500);
-      }
-    }
-  );
+  const on = toggle.checked;
+  if (clearTimer) { clearTimeout(clearTimer); clearTimer = null; }
+  status.textContent = on ? "در حال ترجمه…" : "";
+  chrome.runtime.sendMessage({ type: "SET_STATE", tabId: tab.id, on }, (res) => {
+    if (!on) return;
+    if (toggle.checked !== on) return; // در این فاصله کاربر کلید را خاموش کرده
+    const failed = chrome.runtime.lastError || !res || !res.ok;
+    status.textContent = failed ? "خطا در ترجمه" : "✓ ترجمه انجام شد";
+    if (!failed) clearTimer = setTimeout(() => { status.textContent = ""; }, 2500);
+  });
 });

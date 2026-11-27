@@ -146,12 +146,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const key = `tab_${msg.tabId}`;
       if (msg.on) {
         await chrome.storage.session.set({ [key]: true });
-        try { await enableInTab(msg.tabId); } catch (e) {}
+        let result;
+        try {
+          result = await enableInTab(msg.tabId);
+        } catch (e) {
+          result = { ok: false, error: String(e && e.message || e) };
+        }
+        sendResponse(result && typeof result === "object" ? result : { ok: false, error: "no response" });
       } else {
         await chrome.storage.session.remove(key);
         try { await chrome.tabs.sendMessage(msg.tabId, { type: "TRANSLATE_OFF" }); } catch (e) {}
+        sendResponse({ ok: true });
       }
-      sendResponse({ ok: true });
     } else if (msg.type === "TRANSLATE_BATCH") {
       sendResponse({ translations: await translateBatch(msg.texts) });
     }

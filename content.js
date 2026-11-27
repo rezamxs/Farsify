@@ -170,14 +170,29 @@
     document.documentElement.removeAttribute("fa-trans");
   }
 
-  function turnOn() {
+  let fullRun = null; // ترجمه‌ی کامل صفحه که در جریان است
+
+  async function turnOn() {
     if (!active) {
       active = true;
       generation++;
     }
     document.documentElement.setAttribute("fa-trans", "on");
     startObserver();
-    return translateAll();
+    const previous = fullRun;
+    const run = translateAll();
+    fullRun = run;
+    try {
+      // اگر ترجمه‌ی قبلی هنوز در جریان است، منتظر آن هم بمانیم تا گزارش درست باشد
+      const results = await Promise.all([previous ? previous.catch(() => null) : null, run]);
+      return results.filter(Boolean).reduce((a, b) => ({
+        total: a.total + b.total,
+        translated: a.translated + b.translated,
+        failed: a.failed + b.failed
+      }), { total: 0, translated: 0, failed: 0 });
+    } finally {
+      if (fullRun === run) fullRun = null;
+    }
   }
 
   function turnOff() {
@@ -187,11 +202,21 @@
     restoreAll();
   }
 
-  chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === "TRANSLATE_ON") {
-      turnOn().catch(console.error);
+      // پایان ترجمه به background (و از آنجا به popup) گزارش می‌شود
+      turnOn().then((stats) => {
+        // اگر متنی برای ترجمه بود ولی هیچ‌کدام ترجمه نشد، یعنی خطا
+        const ok = stats.total === 0 || stats.translated > 0;
+        sendResponse({ ok, ...stats });
+      }).catch((e) => {
+        console.error(e);
+        sendResponse({ ok: false, error: String(e && e.message || e) });
+      });
+      return true; // پاسخ async
     } else if (msg.type === "TRANSLATE_OFF") {
       turnOff();
+      sendResponse({ ok: true });
     }
   });
 })();
