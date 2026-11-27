@@ -99,6 +99,43 @@ async function translateBatch(texts) {
   return out;
 }
 
+// تزریق اسکریپت‌ها (در صورت نیاز) و روشن کردن ترجمه در یک تب
+async function enableInTab(tabId) {
+  try {
+    return await chrome.tabs.sendMessage(tabId, { type: "TRANSLATE_ON" });
+  } catch (e) {
+    // صفحه هنوز اسکریپت تزریق نشده — تزریق دستی
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ["font.js", "content.js"]
+    });
+    return await chrome.tabs.sendMessage(tabId, { type: "TRANSLATE_ON" });
+  }
+}
+
+// بعد از رفتن به صفحه‌ی جدید یا رفرش، اگر ترجمه برای این تب روشن است دوباره اعمال شود
+chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
+  if (info.status !== "complete") return;
+  if (tab && tab.url && !/^https?:/i.test(tab.url)) return;
+  const key = `tab_${tabId}`;
+  const st = await chrome.storage.session.get(key);
+  if (!st[key]) return;
+  try {
+    // font.js و content.js در برابر تزریق دوباره محافظت شده‌اند
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      files: ["font.js", "content.js"]
+    });
+    await chrome.tabs.sendMessage(tabId, { type: "TRANSLATE_ON" });
+  } catch (e) {
+    // بدون مجوز دسترسی به این سایت (activeTab بعد از رفتن به دامنه‌ی دیگر از بین می‌رود)
+  }
+});
+
+chrome.tabs.onRemoved.addListener((tabId) => {
+  chrome.storage.session.remove(`tab_${tabId}`).catch(() => {});
+});
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   (async () => {
     if (msg.type === "GET_STATE") {
@@ -109,18 +146,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const key = `tab_${msg.tabId}`;
       if (msg.on) {
         await chrome.storage.session.set({ [key]: true });
-        try {
-          await chrome.tabs.sendMessage(msg.tabId, { type: "TRANSLATE_ON" });
-        } catch (e) {
-          // صفحه هنوز اسکریپت تزریق نشده — تزریق دستی
-          try {
-            await chrome.scripting.executeScript({
-              target: { tabId: msg.tabId },
-              files: ["font.js", "content.js"]
-            });
-            await chrome.tabs.sendMessage(msg.tabId, { type: "TRANSLATE_ON" });
-          } catch (e2) {}
-        }
+        try { await enableInTab(msg.tabId); } catch (e) {}
       } else {
         await chrome.storage.session.remove(key);
         try { await chrome.tabs.sendMessage(msg.tabId, { type: "TRANSLATE_OFF" }); } catch (e) {}
