@@ -1,5 +1,9 @@
 # 🌍 Farsify
 
+[![CI](https://github.com/rezamxs/Farsify/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rezamxs/Farsify/actions/workflows/ci.yml?query=branch%3Amain)
+[![Release](https://img.shields.io/github/v/release/rezamxs/Farsify?sort=semver)](https://github.com/rezamxs/Farsify/releases/latest)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 [English](#english) | [فارسی](#فارسی)
 
 <a name="english"></a>
@@ -44,7 +48,7 @@ When translation is on, the text of the page is sent to the **MyMemory** transla
 
 ### License
 
-MIT
+[MIT](LICENSE)
 
 <a name="فارسی"></a>
 ## فارسی
@@ -88,4 +92,4 @@ python3 build.py
 
 ### لایسنس
 
-MIT
+[MIT](LICENSE)
